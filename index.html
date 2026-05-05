@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poetry Slam Donauwörth</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* ── Hauptseite ── */
+
+        .page { display: none; }
+        .page.active { display: block; }
+
+        .hero {
+            background: url('hero.jpeg') center/cover;
+            color: white;
+            padding: 120px 20px 80px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: fadeInDown 1s ease;
+        }
+
+        .slam-number {
+            font-weight: 900;
+            color: #FFD700;
+            font-size: 1.2em;
+        }
+
+        .next-event {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        .next-event h2 { font-size: 2em; margin-bottom: 15px; }
+
+        .next-event .date {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin: 15px 0;
+            color: #FFD700;
+        }
+
+        .next-event .time { font-size: 1.2em; margin: 10px 0; }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .section { margin-bottom: 80px; }
+
+        .section h2 {
+            font-size: 2.5em;
+            color: #8A2387;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .info-card h3 { font-size: 1.8em; margin-bottom: 15px; }
+        .info-card p { font-size: 1.1em; line-height: 1.8; }
+
+        .info-card-bottom { margin-top: auto; padding-top: 20px; }
+
+        .about {
+            background: #f9f9f9;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .about p {
+            max-width: 800px;
+            margin: 0 auto 30px;
+            font-size: 1.2em;
+            line-height: 1.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #E94057, #8A2387);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(233, 64, 87, 0.4);
+            cursor: pointer;
+            border: none;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(233, 64, 87, 0.6);
+        }
+
+        footer {
+            background: #2c2c2c;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        footer p { margin: 10px 0; }
+
+        .venues {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .venues h3 {
+            color: #8A2387;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .venue-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .venue-item {
+            margin: 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-left: 4px solid #E94057;
+            border-radius: 5px;
+        }
+
+        .venue-item strong { color: #8A2387; font-size: 1.2em; }
+
+        .hero-credit {
+            position: absolute;
+            bottom: 8px;
+            right: 12px;
+            font-size: 0.75em;
+            color: rgba(255,255,255,0.75);
+        }
+
+        /* ── Countdown ── */
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 12px 16px;
+            min-width: 72px;
+            text-align: center;
+        }
+
+        .countdown-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #FFD700;
+            line-height: 1;
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.72em;
+            opacity: 0.85;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+            display: block;
+        }
+
+        /* ── Datenschutzseite ── */
+
+        .ds-header {
+            background: linear-gradient(135deg, #8A2387, #E94057);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .ds-header h1 { font-size: 2.2em; margin-bottom: 10px; }
+
+        .ds-back {
+            color: #FFD700;
+            text-decoration: none;
+            font-size: 1em;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
+        }
+
+        .ds-back:hover { text-decoration: underline; }
+
+        .ds-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .ds-container h2 {
+            color: #8A2387;
+            font-size: 1.4em;
+            margin: 30px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f0e0f5;
+        }
+
+        .ds-container h3 {
+            color: #E94057;
+            font-size: 1.1em;
+            margin: 20px 0 10px;
+        }
+
+        .ds-container p { margin-bottom: 15px; font-size: 0.95em; }
+
+        .ds-container ul {
+            margin: 10px 0 15px 20px;
+            font-size: 0.95em;
+        }
+
+        .ds-container ul li { margin-bottom: 8px; }
+
+        .ds-container a { color: #E94057; text-decoration: none; cursor: pointer; }
+        .ds-container a:hover { text-decoration: underline; }
+
+        .ds-index {
+            background: #f9f9f9;
+            padding: 20px 20px 20px 40px;
+            border-radius: 10px;
+            border-left: 4px solid #8A2387;
+            margin-bottom: 30px;
+        }
+
+        .ds-index li { margin-bottom: 6px; }
+        .ds-index a { color: #8A2387; }
+
+        .ds-seal {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.85em;
+            color: #999;
+        }
+
+        .ds-footer {
+            background: #2c2c2c;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 0;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2em; }
+            .next-event h2 { font-size: 1.5em; }
+            .section h2 { font-size: 2em; }
+            .venue-grid { grid-template-columns: 1fr; }
+            .ds-container { padding: 20px; margin: 20px; }
+            .ds-header h1 { font-size: 1.8em; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ -->
+<!--              HAUPTSEITE                     -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="page-main" class="page active">
+
+    <div class="hero">
+        <img src="logo.png" alt="Poetry Slam Donauwörth Logo"
+             style="max-height: 120px; margin-bottom: 20px; filter: drop-shadow(2px 2px 6px rgba(0,0,0,0.5));">
+        <h1 class="hero-title">Poetry Slam Donauwörth <span class="slam-number">#11</span></h1>
+        <div class="next-event">
+            <h2>Nächster Slam</h2>
+            <div class="date">12. November 2026</div>
+            <div class="time">Einlass: 18:00 Uhr | Beginn: 19:00 Uhr</div>
+            <div class="countdown" id="countdown">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="cd-days">--</span>
+                    <span class="countdown-label">Tage</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="cd-hours">--</span>
+                    <span class="countdown-label">Stunden</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="cd-minutes">--</span>
+                    <span class="countdown-label">Minuten</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="cd-seconds">--</span>
+                    <span class="countdown-label">Sekunden</span>
+                </div>
+            </div>
+            <p style="margin-top: 20px; font-size: 1.1em;">AULA des Gymnasium Donauwörth</p>
+            <a href="javascript:void(0)"
+               onclick="event.preventDefault(); event.stopPropagation();
+window.top.open('https://tickettune.com/ratsontour/veranstaltungen/', '_blank');"
+               class="cta-button"
+               style="margin-top: 25px; display: inline-block;">
+                🎟️ Tickets kaufen
+            </a>
+        </div>
+        <p class="hero-credit">© Michael Steger</p>
+    </div>
+
+    <div class="container" style="padding: 40px 20px;">
+        <div class="venues">
+            <h3>Unsere Veranstaltungsorte</h3>
+            <div class="venue-grid">
+                <div class="venue-item">
+                    <strong>Frühjahr (März/April):</strong><br>
+                    AULA der FOS Donauwörth<br>
+                    <a href="javascript:void(0)"
+                       onclick="window.top.open('https://maps.app.goo.gl/sV52FvLR4t41Xamk6', '_blank');"
+                       style="color: #E94057; font-size: 0.95em; text-decoration: none; cursor: pointer;">
+                        📍 Auf Google Maps anzeigen
+                    </a>
+                </div>
+                <div class="venue-item">
+                    <strong>Herbst (November):</strong><br>
+                    AULA des Gymnasium Donauwörth<br>
+                    <a href="javascript:void(0)"
+                       onclick="window.top.open('https://maps.app.goo.gl/L1SyfSFeHgHbJAEx8', '_blank');"
+                       style="color: #E94057; font-size: 0.95em; text-decoration: none; cursor: pointer;">
+                        📍 Auf Google Maps anzeigen
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="about">
+        <div class="container">
+            <h2>Was ist Poetry Slam?</h2>
+            <p>
+                Poetry Slam ist ein literarischer Wettbewerb, bei dem Poet:innen ihre selbstverfassten Texte
+                auf der Bühne performen. Egal ob Lyrik, Prosa oder Rap – all das ist ohne Musik erlaubt!
+                Das Publikum entscheidet durch Applaus oder Punktevergabe, wer weiterkommt oder gewinnt.
+            </p>
+            <p>
+                In Donauwörth hat sich Poetry Slam zu einem erfolgreichen Format entwickelt,
+                das viele begeisterte Zuschauer:innen und Zuhörer:innen anzieht.
+                Zweimal im Jahr verwandeln sich die Aulen an beiden Schulen in Bühnen für großartige Wortkunst!
+            </p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>Sei dabei!</h2>
+            <div class="info-grid">
+
+                <div class="info-card">
+                    <div>
+                        <h3>🎤 Für Slammer:innen</h3>
+                        <p>
+                            Du möchtest auf die Bühne? Melde dich an!
+                            Egal ob Poetry Slam Neuling oder erfahrener Bühnenprofi – jede:r ist willkommen.
+                        </p>
+                    </div>
+                    <div class="info-card-bottom">
+                        <a
+href="mailto:klaus.rattenbacher@outlook.com?subject=Anmeldung%20Poetry%20Slam%20Donauw%C3%B6rth"
+                           class="cta-button"
+                           style="font-size: 1em; padding: 12px 30px;">
+                            ✉️ Jetzt anmelden
+                        </a>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div>
+                        <h3>🎭 Für Zuschauer:innen</h3>
+                        <p>
+                            Erlebe einen unterhaltsamen Abend voller Wortakrobatik, Emotionen und Überraschungen.
+                            Sichere dir rechtzeitig deine Tickets für den nächsten Slam!
+                        </p>
+                    </div>
+                    <div class="info-card-bottom">
+                        <a href="javascript:void(0)"
+                           onclick="window.top.open('https://tickettune.com/ratsontour/veranstaltungen/', '_blank');"
+                           class="cta-button"
+                           style="font-size: 1em; padding: 12px 30px;">
+                            Tickets sichern
+                        </a>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div>
+                        <h3>📅 Regelmäßig dabei sein</h3>
+                        <p>
+                            Zweimal im Jahr – im Frühjahr und im November – geht es rund in Donauwörth.
+                            Folge uns auf Social Media, um keine Termine zu verpassen!
+                        </p>
+                    </div>
+                    <div class="info-card-bottom" style="display: flex; flex-direction: column; gap: 10px;">
+                        <a href="javascript:void(0)"
+                           onclick="window.top.open('https://www.facebook.com/slamdonauwoerth/', '_blank');"
+                           class="cta-button"
+                           style="font-size: 1em; padding: 12px 30px; text-align: center;">
+                            📘 Facebook
+                        </a>
+                        <a href="javascript:void(0)"
+                           onclick="window.top.open('https://www.instagram.com/poetryslamdon/', '_blank');"
+                           class="cta-button"
+                           style="font-size: 1em; padding: 12px 30px; text-align: center;">
+                            📸 Instagram
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>Veranstalter:</strong> Klaus Rattenbacher</p>
+        <p style="margin-top: 20px;">
+            📧 <a href="mailto:klaus.rattenbacher@outlook.com" style="color: #FFD700; text-decoration:
+none;">klaus.rattenbacher@outlook.com</a><br>
+            📱 <a href="tel:+491712819755" style="color: #FFD700; text-decoration: none;">+49 171 2819755</a>
+        </p>
+        <p style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2);">
+            <strong>Impressum</strong><br>
+            Klaus Rattenbacher<br>
+            Rat's on Tour - Event Agentur<br>
+            Heckenrosenstr. 9<br>
+            86609 Donauwörth
+        </p>
+        <p style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); font-size: 0.9em;
+color: rgba(255,255,255,0.7);">
+             <strong style="color: white;">Streitschlichtung</strong><br>
+    Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer
+    Verbraucherschlichtungsstelle teilzunehmen.
+</p>
+        <p style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2);">
+            <a href="javascript:void(0)"
+               onclick="showPage('datenschutz')"
+               style="color: #FFD700; text-decoration: none; cursor: pointer;">
+                Datenschutzerklärung
+            </a>
+        </p>
+        <p style="margin-top: 20px;">© 2026 Poetry Slam Donauwörth</p>
+    </footer>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════ -->
+<!--          DATENSCHUTZERKLÄRUNG               -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="page-datenschutz" class="page">
+
+    <div class="ds-header">
+        <h1>Datenschutzerklärung</h1>
+        <button class="ds-back" onclick="showPage('main')">← Zurück zur Hauptseite</button>
+    </div>
+
+    <div class="ds-container">
+
+        <h2 id="m716">Präambel</h2>
+        <p>Mit der folgenden Datenschutzerklärung möchten wir Sie darüber aufklären, welche Arten Ihrer personenbezogenen Daten (nachfolgend auch kurz als "Daten" bezeichnet) wir zu welchen Zwecken und in welchem Umfang verarbeiten. Die Datenschutzerklärung gilt für alle von uns durchgeführten Verarbeitungen personenbezogener Daten, sowohl im Rahmen der Erbringung unserer Leistungen als auch insbesondere auf unseren Webseiten, in mobilen Applikationen sowie innerhalb externer Onlinepräsenzen, wie z. B. unserer Social-Media-Profile (nachfolgend zusammenfassend bezeichnet als "Onlineangebot").</p>
+        <p>Die verwendeten Begriffe sind nicht geschlechtsspezifisch.</p>
+        <p>Stand: 1. März 2026</p>
+
+        <h2>Inhaltsübersicht</h2>
+        <ul class="ds-index">
+            <li><a href="#m716">Präambel</a></li>
+            <li><a href="#m3">Verantwortlicher</a></li>
+            <li><a href="#mOverview">Übersicht der Verarbeitungen</a></li>
+            <li><a href="#m2427">Maßgebliche Rechtsgrundlagen</a></li>
+            <li><a href="#m27">Sicherheitsmaßnahmen</a></li>
+            <li><a href="#m25">Übermittlung von personenbezogenen Daten</a></li>
+            <li><a href="#m24">Internationale Datentransfers</a></li>
+            <li><a href="#m12">Allgemeine Informationen zur Datenspeicherung und Löschung</a></li>
+            <li><a href="#m10">Rechte der betroffenen Personen</a></li>
+            <li><a href="#m225">Bereitstellung des Onlineangebots und Webhosting</a></li>
+            <li><a href="#m134">Einsatz von Cookies</a></li>
+            <li><a href="#m182">Kontakt- und Anfrageverwaltung</a></li>
+            <li><a href="#m15">Änderung und Aktualisierung</a></li>
+            <li><a href="#m42">Begriffsdefinitionen</a></li>
+        </ul>
+
+        <h2 id="m3">Verantwortlicher</h2>
+        <p>Klaus Rattenbacher<br>
+        rats-on-tour Event Agentur<br>
+        Heckenrosenstr. 9<br>
+        86609 Donauwörth</p>
+        <p>E-Mail-Adresse: <a href="mailto:klaus.rattenbacher@outlook.com">klaus.rattenbacher@outlook.com</a></p>
+        <p>Impressum: <a href="javascript:void(0)" onclick="window.top.open('https://poetry-slam-donauwörth.de/', '_blank');">https://poetry-slam-donauwörth.de/</a></p>
+
+        <h2 id="mOverview">Übersicht der Verarbeitungen</h2>
+        <p>Die nachfolgende Übersicht fasst die Arten der verarbeiteten Daten und die Zwecke ihrer Verarbeitung zusammen und verweist auf die betroffenen Personen.</p>
+        <h3>Arten der verarbeiteten Daten</h3>
+        <ul>
+            <li>Kontaktdaten.</li>
+            <li>Inhaltsdaten.</li>
+            <li>Nutzungsdaten.</li>
+            <li>Meta-, Kommunikations- und Verfahrensdaten.</li>
+            <li>Protokolldaten.</li>
+        </ul>
+        <h3>Kategorien betroffener Personen</h3>
+        <ul>
+            <li>Kommunikationspartner.</li>
+            <li>Nutzer.</li>
+        </ul>
+        <h3>Zwecke der Verarbeitung</h3>
+        <ul>
+            <li>Kommunikation.</li>
+            <li>Sicherheitsmaßnahmen.</li>
+            <li>Organisations- und Verwaltungsverfahren.</li>
+            <li>Feedback.</li>
+            <li>Bereitstellung unseres Onlineangebotes und Nutzerfreundlichkeit.</li>
+            <li>Informationstechnische Infrastruktur.</li>
+        </ul>
+
+        <h2 id="m2427">Maßgebliche Rechtsgrundlagen</h2>
+        <p><strong>Maßgebliche Rechtsgrundlagen nach der DSGVO:</strong> Im Folgenden erhalten Sie eine Übersicht der Rechtsgrundlagen der DSGVO, auf deren Basis wir personenbezogene Daten verarbeiten. Bitte nehmen Sie zur Kenntnis, dass neben den Regelungen der DSGVO nationale Datenschutzvorgaben in Ihrem bzw. unserem Wohn- oder Sitzland gelten können.</p>
+        <ul>
+            <li><strong>Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO)</strong> – Die betroffene Person hat ihre Einwilligung in die Verarbeitung der sie betreffenden personenbezogenen Daten für einen spezifischen Zweck oder mehrere bestimmte Zwecke gegeben.</li>
+            <li><strong>Vertragserfüllung und vorvertragliche Anfragen (Art. 6 Abs. 1 S. 1 lit. b) DSGVO)</strong> – Die Verarbeitung ist für die Erfüllung eines Vertrags, dessen Vertragspartei die betroffene Person ist, oder zur Durchführung vorvertraglicher Maßnahmen erforderlich.</li>
+            <li><strong>Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO)</strong> – Die Verarbeitung ist zur Wahrung der berechtigten Interessen des Verantwortlichen oder eines Dritten notwendig.</li>
+        </ul>
+        <p><strong>Nationale Datenschutzregelungen in Deutschland:</strong> Zusätzlich zu den Datenschutzregelungen der DSGVO gelten nationale Regelungen zum Datenschutz in Deutschland, insbesondere das Bundesdatenschutzgesetz (BDSG).</p>
+
+        <h2 id="m27">Sicherheitsmaßnahmen</h2>
+        <p>Wir treffen nach Maßgabe der gesetzlichen Vorgaben unter Berücksichtigung des Stands der Technik, der Implementierungskosten und der Art, des Umfangs, der Umstände und der Zwecke der Verarbeitung sowie der unterschiedlichen Eintrittswahrscheinlichkeiten und des Ausmaßes der Bedrohung der Rechte und Freiheiten natürlicher Personen geeignete technische und organisatorische Maßnahmen, um ein dem Risiko angemessenes Schutzniveau zu gewährleisten.</p>
+        <p>Zu den Maßnahmen gehören insbesondere die Sicherung der Vertraulichkeit, Integrität und Verfügbarkeit von Daten durch Kontrolle des physischen und elektronischen Zugangs zu den Daten.</p>
+        <p><strong>TLS-/SSL-Verschlüsselung (HTTPS):</strong> Um die Daten der Nutzer zu schützen, setzen wir auf TLS-/SSL-Verschlüsselung. Wenn eine Website durch ein SSL-/TLS-Zertifikat gesichert ist, wird dies durch die Anzeige von HTTPS in der URL signalisiert.</p>
+
+        <h2 id="m25">Übermittlung von personenbezogenen Daten</h2>
+        <p>Im Rahmen unserer Verarbeitung von personenbezogenen Daten kommt es vor, dass diese an andere Stellen, Unternehmen, rechtlich selbstständige Organisationseinheiten oder Personen übermittelt werden. Zu den Empfängern dieser Daten können z. B. mit IT-Aufgaben beauftragte Dienstleister gehören oder Anbieter von Diensten und Inhalten, die in eine Website eingebunden sind. In solchen Fällen beachten wir die gesetzlichen Vorgaben und schließen insbesondere entsprechende Verträge bzw. Vereinbarungen, die dem Schutz Ihrer Daten dienen, mit den Empfängern Ihrer Daten ab.</p>
+
+        <h2 id="m24">Internationale Datentransfers</h2>
+        <p>Sofern wir Daten in ein Drittland (außerhalb der EU oder des EWR) übermitteln, erfolgt dies stets im Einklang mit den gesetzlichen Vorgaben. Für Datenübermittlungen in die USA stützen wir uns vorrangig auf das Data Privacy Framework (DPF), welches durch einen Angemessenheitsbeschluss der EU-Kommission vom 10.07.2023 als sicherer Rechtsrahmen anerkannt wurde. Zusätzlich haben wir mit den jeweiligen Anbietern Standardvertragsklauseln abgeschlossen.</p>
+        <p>Weitere Informationen zum DPF finden Sie unter: <a href="javascript:void(0)" onclick="window.top.open('https://www.dataprivacyframework.gov/', '_blank');">https://www.dataprivacyframework.gov/</a></p>
+        <p>Informationen zu Drittlandtransfers und geltenden Angemessenheitsbeschlüssen können Sie dem Informationsangebot der EU-Kommission entnehmen: <a href="javascript:void(0)" onclick="window.top.open('https://commission.europa.eu/law/law-topic/data-protection/international-dimension-data-protection_en?prefLang=de', '_blank');">https://commission.europa.eu/law/law-topic/data-protection/international-dimension-data-protection_en</a></p>
+
+        <h2 id="m12">Allgemeine Informationen zur Datenspeicherung und Löschung</h2>
+        <p>Wir löschen personenbezogene Daten, die wir verarbeiten, gemäß den gesetzlichen Bestimmungen, sobald die zugrundeliegenden Einwilligungen widerrufen werden oder keine weiteren rechtlichen Grundlagen für die Verarbeitung bestehen. Ausnahmen bestehen, wenn gesetzliche Pflichten oder besondere Interessen eine längere Aufbewahrung erfordern.</p>
+        <p>Insbesondere müssen Daten, die aus handels- oder steuerrechtlichen Gründen aufbewahrt werden müssen oder deren Speicherung notwendig ist zur Rechtsverfolgung oder zum Schutz der Rechte anderer natürlicher oder juristischer Personen, entsprechend archiviert werden.</p>
+        <p>Bei mehreren Angaben zur Aufbewahrungsdauer oder Löschungsfristen ist stets die längste Frist maßgeblich.</p>
+        <p>Gesetzliche Aufbewahrungsfristen nach deutschem Recht:</p>
+        <ul>
+            <li><strong>10 Jahre</strong> – Bücher, Aufzeichnungen, Jahresabschlüsse, Inventare (§ 147 Abs. 1 Nr. 1 AO, § 257 Abs. 1 Nr. 1 HGB).</li>
+            <li><strong>8 Jahre</strong> – Buchungsbelege, Rechnungen und Kostenbelege (§ 147 Abs. 1 Nr. 4 AO, § 257 Abs. 1 Nr. 4 HGB).</li>
+            <li><strong>6 Jahre</strong> – Übrige Geschäftsunterlagen, empfangene Handels- oder Geschäftsbriefe (§ 147 Abs. 1 Nr. 2, 3, 5 AO, § 257 Abs. 1 Nr. 2 u. 3 HGB).</li>
+            <li><strong>3 Jahre</strong> – Daten im Rahmen der gesetzlichen Verjährungsfrist (§§ 195, 199 BGB).</li>
+        </ul>
+
+        <h2 id="m10">Rechte der betroffenen Personen</h2>
+        <p>Ihnen stehen als Betroffene nach der DSGVO verschiedene Rechte zu (Art. 15 bis 21 DSGVO):</p>
+        <ul>
+            <li><strong>Widerspruchsrecht:</strong> Sie haben das Recht, aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit gegen die Verarbeitung der Sie betreffenden personenbezogenen Daten Widerspruch einzulegen.</li>
+            <li><strong>Widerrufsrecht bei Einwilligungen:</strong> Sie haben das Recht, erteilte Einwilligungen jederzeit zu widerrufen.</li>
+            <li><strong>Auskunftsrecht:</strong> Sie haben das Recht, eine Bestätigung darüber zu verlangen, ob betreffende Daten verarbeitet werden und auf Auskunft über diese Daten sowie auf weitere Informationen und Kopie der Daten.</li>
+            <li><strong>Recht auf Berichtigung:</strong> Sie haben das Recht, die Vervollständigung oder Berichtigung der Sie betreffenden unrichtigen Daten zu verlangen.</li>
+            <li><strong>Recht auf Löschung und Einschränkung der Verarbeitung:</strong> Sie haben das Recht, die Löschung Ihrer Daten oder alternativ eine Einschränkung der Verarbeitung zu verlangen.</li>
+            <li><strong>Recht auf Datenübertragbarkeit:</strong> Sie haben das Recht, Ihre Daten in einem strukturierten, gängigen und maschinenlesbaren Format zu erhalten.</li>
+            <li><strong>Beschwerde bei Aufsichtsbehörde:</strong> Sie haben das Recht auf Beschwerde bei einer Datenschutz-Aufsichtsbehörde, insbesondere in dem Mitgliedstaat Ihres gewöhnlichen Aufenthaltsorts.</li>
+        </ul>
+
+        <h2 id="m225">Bereitstellung des Onlineangebots und Webhosting</h2>
+        <p>Wir verarbeiten die Daten der Nutzer, um ihnen unsere Online-Dienste zur Verfügung stellen zu können. Zu diesem Zweck verarbeiten wir die IP-Adresse des Nutzers, die notwendig ist, um die Inhalte und Funktionen unserer Online-Dienste an den Browser oder das Endgerät der Nutzer zu übermitteln.</p>
+        <ul>
+            <li><strong>Verarbeitete Datenarten:</strong> Nutzungsdaten, Meta-, Kommunikations- und Verfahrensdaten, Protokolldaten.</li>
+            <li><strong>Betroffene Personen:</strong> Nutzer.</li>
+            <li><strong>Zwecke der Verarbeitung:</strong> Bereitstellung des Onlineangebotes, Informationstechnische Infrastruktur, Sicherheitsmaßnahmen.</li>
+            <li><strong>Rechtsgrundlagen:</strong> Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO).</li>
+        </ul>
+        <p><strong>Erhebung von Zugriffsdaten und Logfiles:</strong> Der Zugriff auf unser Onlineangebot wird in Form von Server-Logfiles protokolliert. Zu den Serverlogfiles können Adresse und Name der abgerufenen Webseiten, Datum und Uhrzeit des Abrufs, übertragene Datenmengen, Browsertyp, Betriebssystem, Referrer URL und IP-Adressen gehören. Logfile-Informationen werden für die Dauer von maximal 30 Tagen gespeichert und danach gelöscht oder anonymisiert.</p>
+
+        <h2 id="m134">Einsatz von Cookies</h2>
+        <p>Unter dem Begriff „Cookies" werden Funktionen verstanden, die Informationen auf Endgeräten der Nutzer speichern und aus ihnen auslesen. Wir verwenden Cookies gemäß den gesetzlichen Vorschriften. Dazu holen wir, wenn erforderlich, vorab die Zustimmung der Nutzer ein. Ist eine Zustimmung nicht notwendig, setzen wir auf unsere berechtigten Interessen.</p>
+        <p><strong>Speicherdauer:</strong></p>
+        <ul>
+            <li><strong>Temporäre Cookies (Session-Cookies):</strong> Werden spätestens gelöscht, nachdem ein Nutzer das Onlineangebot verlassen und sein Endgerät geschlossen hat.</li>
+            <li><strong>Permanente Cookies:</strong> Bleiben auch nach dem Schließen des Endgeräts gespeichert; die Speicherdauer kann bis zu zwei Jahre betragen.</li>
+        </ul>
+        <p><strong>Allgemeine Hinweise zum Widerruf und Widerspruch (Opt-out):</strong> Nutzer können die von ihnen abgegebenen Einwilligungen jederzeit widerrufen und zudem einen Widerspruch gegen die Verarbeitung mittels der Privatsphäre-Einstellungen ihres Browsers erklären.</p>
+        <ul>
+            <li><strong>Verarbeitete Datenarten:</strong> Meta-, Kommunikations- und Verfahrensdaten.</li>
+            <li><strong>Betroffene Personen:</strong> Nutzer.</li>
+            <li><strong>Rechtsgrundlagen:</strong> Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO), Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO).</li>
+        </ul>
+
+        <h2 id="m182">Kontakt- und Anfrageverwaltung</h2>
+        <p>Bei der Kontaktaufnahme mit uns (z. B. per E-Mail) werden die Angaben der anfragenden Personen verarbeitet, soweit dies zur Beantwortung der Kontaktanfragen und etwaiger angefragter Maßnahmen erforderlich ist.</p>
+        <ul>
+            <li><strong>Verarbeitete Datenarten:</strong> Kontaktdaten, Inhaltsdaten, Meta-, Kommunikations- und Verfahrensdaten.</li>
+            <li><strong>Betroffene Personen:</strong> Kommunikationspartner.</li>
+            <li><strong>Zwecke der Verarbeitung:</strong> Kommunikation, Organisations- und Verwaltungsverfahren, Bereitstellung des Onlineangebotes.</li>
+            <li><strong>Aufbewahrung und Löschung:</strong> Löschung entsprechend den Angaben im Abschnitt „Allgemeine Informationen zur Datenspeicherung und Löschung".</li>
+            <li><strong>Rechtsgrundlagen:</strong> Vertragserfüllung und vorvertragliche Anfragen (Art. 6 Abs. 1 S. 1 lit. b) DSGVO), Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO).</li>
+        </ul>
+        <p><strong>Kontaktformular:</strong> Bei Kontaktaufnahme per E-Mail verarbeiten wir die uns übermittelten personenbezogenen Daten zur Beantwortung und Bearbeitung des jeweiligen Anliegens. Wir nutzen diese Daten ausschließlich für den angegebenen Zweck der Kontaktaufnahme und Kommunikation.</p>
+
+        <h2 id="m15">Änderung und Aktualisierung</h2>
+        <p>Wir bitten Sie, sich regelmäßig über den Inhalt unserer Datenschutzerklärung zu informieren. Wir passen die Datenschutzerklärung an, sobald die Änderungen der von uns durchgeführten Datenverarbeitungen dies erforderlich machen. Wir informieren Sie, sobald durch die Änderungen eine Mitwirkungshandlung Ihrerseits (z. B. Einwilligung) oder eine sonstige individuelle Benachrichtigung erforderlich wird.</p>
+
+        <h2 id="m42">Begriffsdefinitionen</h2>
+        <ul>
+            <li><strong>Inhaltsdaten:</strong> Informationen, die im Zuge der Erstellung, Bearbeitung und Veröffentlichung von Inhalten generiert werden, z. B. Texte, Bilder, Videos und Metadaten.</li>
+            <li><strong>Kontaktdaten:</strong> Informationen, die die Kommunikation mit Personen ermöglichen, z. B. Telefonnummern, Adressen und E-Mail-Adressen.</li>
+            <li><strong>Meta-, Kommunikations- und Verfahrensdaten:</strong> Informationen über die Art und Weise, wie Daten verarbeitet, übermittelt und verwaltet werden, z. B. IP-Adressen, Zeitangaben und Identifikationsnummern.</li>
+            <li><strong>Nutzungsdaten:</strong> Informationen, die erfassen, wie Nutzer mit digitalen Produkten interagieren, z. B. Seitenaufrufe, Verweildauer und verwendete Geräte.</li>
+            <li><strong>Personenbezogene Daten:</strong> Alle Informationen, die sich auf eine identifizierte oder identifizierbare natürliche Person beziehen.</li>
+            <li><strong>Protokolldaten:</strong> Informationen über Ereignisse oder Aktivitäten, die in einem System protokolliert wurden, z. B. Zeitstempel, IP-Adressen und Fehlermeldungen.</li>
+            <li><strong>Verantwortlicher:</strong> Die natürliche oder juristische Person, die über die Zwecke und Mittel der Verarbeitung von personenbezogenen Daten entscheidet.</li>
+            <li><strong>Verarbeitung:</strong> Jeder Vorgang im Zusammenhang mit personenbezogenen Daten, z. B. Erheben, Speichern, Übermitteln oder Löschen.</li>
+        </ul>
+
+        <p class="ds-seal">
+            <a href="javascript:void(0)" onclick="window.top.open('https://datenschutz-generator.de/', '_blank');">
+                Erstellt mit kostenlosem Datenschutz-Generator.de von Dr. Thomas Schwenke
+            </a>
+        </p>
+
+    </div>
+
+    <div class="ds-footer">
+        <p>© 2026 Poetry Slam Donauwörth</p>
+        <p style="margin-top: 10px;">
+            <button class="ds-back" onclick="showPage('main')">← Zurück zur Hauptseite</button>
+        </p>
+    </div>
+
+</div>
+
+
+<script>
+    function showPage(page) {
+        document.getElementById('page-main').classList.remove('active');
+        document.getElementById('page-datenschutz').classList.remove('active');
+        document.getElementById('page-' + page).classList.add('active');
+        window.scrollTo(0, 0);
+    }
+
+    (function() {
+        var target = new Date('2026-11-12T19:00:00');
+        function update() {
+            var diff = target - new Date();
+            if (diff <= 0) {
+                document.getElementById('countdown').innerHTML =
+                    '<p style="color:#FFD700;font-size:1.3em;">Der Slam ist heute! 🎤</p>';
+                return;
+            }
+            document.getElementById('cd-days').textContent    = Math.floor(diff / 86400000);
+            document.getElementById('cd-hours').textContent   = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0');
+            document.getElementById('cd-minutes').textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+            document.getElementById('cd-seconds').textContent = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+        }
+        update();
+        setInterval(update, 1000);
+    })();
+</script>
+
+</body>
+</html>
