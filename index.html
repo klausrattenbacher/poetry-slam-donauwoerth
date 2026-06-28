@@ -39,7 +39,7 @@
         }
 
         .site-header img {
-            max-height: 90px;
+            max-height: 180px;
         }
 
         .slam-number-header {
@@ -386,6 +386,71 @@
             .ds-container { padding: 20px; margin: 20px; }
             .ds-header h1 { font-size: 1.8em; }
         }
+
+        /* ── Bewerbungs-Modal ── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.65);
+            z-index: 1000;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+            overflow-y: auto;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: #fff;
+            border-radius: 12px;
+            padding: 36px 32px;
+            max-width: 560px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+        }
+        .modal-box h2 { font-size: 1.5em; margin-bottom: 6px; color: #1a1a2e; }
+        .modal-close {
+            position: absolute;
+            top: 14px; right: 18px;
+            background: none; border: none;
+            font-size: 1.6em; cursor: pointer; color: #666; line-height: 1;
+        }
+        .modal-close:hover { color: #000; }
+        .modal-notice {
+            background: #fff8e1;
+            border-left: 4px solid #f9a825;
+            padding: 10px 14px;
+            border-radius: 4px;
+            font-size: 0.85em; color: #555;
+            margin-bottom: 20px; line-height: 1.5;
+        }
+        .modal-notice p { margin-bottom: 6px; }
+        .modal-notice p:last-child { margin-bottom: 0; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-weight: 600; font-size: 0.9em; margin-bottom: 5px; color: #222; }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group textarea {
+            width: 100%; padding: 9px 12px;
+            border: 1.5px solid #ccc; border-radius: 6px;
+            font-size: 0.95em; font-family: inherit; transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group textarea:focus { border-color: #c0392b; outline: none; }
+        .form-group textarea { resize: vertical; min-height: 80px; }
+        .form-group-check {
+            display: flex; align-items: flex-start; gap: 10px;
+            margin-bottom: 16px; font-size: 0.9em; color: #333;
+        }
+        .form-group-check input { margin-top: 3px; flex-shrink: 0; }
+        .modal-submit {
+            width: 100%; padding: 12px;
+            background: #c0392b; color: #fff;
+            border: none; border-radius: 8px;
+            font-size: 1em; font-weight: 700; cursor: pointer;
+            transition: background 0.2s; margin-top: 6px;
+        }
+        .modal-submit:hover { background: #922b21; }
     </style>
 </head>
 <body>
@@ -501,11 +566,11 @@
                         </p>
                     </div>
                     <div class="info-card-bottom">
-                        <a href="mailto:klaus.rattenbacher@outlook.com?subject=Anmeldung%20Poetry%20Slam%20Donauw%C3%B6rth"
-                           class="cta-button"
-                           style="font-size: 1em; padding: 12px 30px;">
-                            ✉️ Jetzt anmelden
-                        </a>
+                        <button onclick="openBewerbungModal()"
+                                class="cta-button"
+                                style="font-size: 1em; padding: 12px 30px; cursor: pointer;">
+                            ✉️ Jetzt bewerben
+                        </button>
                     </div>
                 </div>
 
@@ -793,6 +858,118 @@
         update();
         setInterval(update, 1000);
     })();
+</script>
+
+<!-- Slams offen für Bewerbungen (hier pflegen) -->
+<ul id="bewerbung-offen" style="display:none">
+    <!-- Einträge mit <li data-datum="TT. Monat JJJJ" data-ort="Ort">Titel</li> -->
+    <!-- Beispiel: <li data-datum="15. März 2027" data-ort="Donauwörth">Poetry Slam Donauwörth #12</li> -->
+</ul>
+
+<!-- Bewerbungs-Modal -->
+<div class="modal-overlay" id="bewerbungModal" onclick="closeBewerbungModalOnOverlay(event)">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeBewerbungModal()" aria-label="Schließen">×</button>
+        <h2>Auftrittsanfrage</h2>
+
+        <div class="modal-notice" id="modal-event-list">
+            <!-- wird per JS befüllt -->
+        </div>
+
+        <form id="bewerbungForm" onsubmit="submitBewerbung(event)">
+            <div class="form-group">
+                <label for="bf-name">Name</label>
+                <input type="text" id="bf-name" placeholder="Dein Name" required>
+            </div>
+            <div class="form-group">
+                <label for="bf-email">E-Mail</label>
+                <input type="email" id="bf-email" placeholder="E-Mail eingeben" required>
+            </div>
+            <div class="form-group">
+                <label for="bf-shows">Shows <span style="color:#c0392b">*</span></label>
+                <input type="text" id="bf-shows" placeholder="Für welche Show(s) möchtest du dich bewerben?" required>
+            </div>
+            <div class="form-group-check">
+                <input type="checkbox" id="bf-newsletter">
+                <label for="bf-newsletter">Bitte nehmt mich in euren Newcomer-Newsletter auf!</label>
+            </div>
+            <div class="form-group">
+                <label for="bf-nachricht">Nachricht</label>
+                <textarea id="bf-nachricht" placeholder="Deine Nachricht"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="bf-beschreibung">Wie würdest du deinen Text & Auftritt am ehesten beschreiben? <span style="color:#c0392b">*</span></label>
+                <input type="text" id="bf-beschreibung" placeholder="z.B. persönlich, politisch, lustig, poetisch …" required>
+            </div>
+            <div class="form-group">
+                <label for="bf-instagram">Instagram</label>
+                <input type="text" id="bf-instagram" placeholder="Dein Instagram-Accountname">
+            </div>
+            <button type="submit" class="modal-submit">✉️ Jetzt E-Mail öffnen & abschicken</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openBewerbungModal() {
+        var notice = document.getElementById('modal-event-list');
+        var offene = document.querySelectorAll('#bewerbung-offen li');
+        var html;
+        if (offene.length === 0) {
+            html = '<p>Du findest deine Wunschveranstaltung hier nicht?</p>' +
+                   '<p>Dann ist die Liste für Voranmeldungen leider schon voll!</p>' +
+                   '<p>Wir schalten aber bald neue Termine frei.</p>' +
+                   '<p>Oder - bewirb dich einfach Initiativ!</p>';
+        } else {
+            html = '<p><strong>Jetzt bewerben für:</strong></p>';
+            offene.forEach(function(li) {
+                var datum = li.getAttribute('data-datum') || '';
+                var ort   = li.getAttribute('data-ort')   || '';
+                html += '<p>📅 <strong>' + li.textContent.trim() + '</strong><br>' +
+                        datum + (ort ? ' · ' + ort : '') + '</p>';
+            });
+            html += '<p>Oder - bewirb dich einfach Initiativ!</p>';
+        }
+        notice.innerHTML = html;
+        document.getElementById('bewerbungModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeBewerbungModal() {
+        document.getElementById('bewerbungModal').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    function closeBewerbungModalOnOverlay(e) {
+        if (e.target === document.getElementById('bewerbungModal')) closeBewerbungModal();
+    }
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeBewerbungModal();
+    });
+    function submitBewerbung(e) {
+        e.preventDefault();
+        var name         = document.getElementById('bf-name').value.trim();
+        var email        = document.getElementById('bf-email').value.trim();
+        var shows        = document.getElementById('bf-shows').value.trim();
+        var newsletter   = document.getElementById('bf-newsletter').checked ? 'Ja' : 'Nein';
+        var nachricht    = document.getElementById('bf-nachricht').value.trim();
+        var beschreibung = document.getElementById('bf-beschreibung').value.trim();
+        var instagram    = document.getElementById('bf-instagram').value.trim();
+
+        var body =
+            'Name: ' + name + '\n' +
+            'E-Mail: ' + email + '\n' +
+            'Shows: ' + shows + '\n' +
+            'Newcomer-Newsletter: ' + newsletter + '\n' +
+            (nachricht ? 'Nachricht: ' + nachricht + '\n' : '') +
+            'Text & Auftritt: ' + beschreibung + '\n' +
+            (instagram ? 'Instagram: ' + instagram + '\n' : '');
+
+        var mailto = 'mailto:klaus.rattenbacher@outlook.com' +
+            '?subject=' + encodeURIComponent('Bewerbung Poetry Slam Donauwörth') +
+            '&body=' + encodeURIComponent(body);
+
+        window.location.href = mailto;
+        closeBewerbungModal();
+    }
 </script>
 
 </body>
