@@ -451,6 +451,37 @@
             transition: background 0.2s; margin-top: 6px;
         }
         .modal-submit:hover { background: #922b21; }
+
+        .channel-hint {
+            margin: 14px 0 8px;
+            font-size: 0.9em;
+            font-weight: 600;
+            text-align: center;
+        }
+        .channel-subhint {
+            margin: 0 0 12px;
+            font-size: 0.8em;
+            line-height: 1.4;
+            text-align: center;
+            opacity: 0.7;
+        }
+        .channel-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .channel-buttons .modal-submit { margin-top: 0; }
+        .channel-instagram { background: #C13584; }
+        .channel-instagram:hover { background: #a02c6f; }
+        .channel-facebook { background: #1877F2; }
+        .channel-facebook:hover { background: #135ec0; }
+        .channel-note {
+            margin-top: 10px;
+            font-size: 0.85em;
+            text-align: center;
+            color: #c0392b;
+            min-height: 1.2em;
+        }
     </style>
 </head>
 <body>
@@ -878,7 +909,7 @@
 
         <form id="bewerbungForm" onsubmit="submitBewerbung(event)">
             <div class="form-group">
-                <label for="bf-name">Name</label>
+                <label for="bf-name">Name <span style="color:#c0392b">*</span></label>
                 <input type="text" id="bf-name" placeholder="Dein Name" required>
             </div>
             <div class="form-group">
@@ -886,8 +917,8 @@
                 <input type="email" id="bf-email" placeholder="E-Mail eingeben" required>
             </div>
             <div class="form-group">
-                <label for="bf-shows">Shows <span style="color:#c0392b">*</span></label>
-                <input type="text" id="bf-shows" placeholder="Für welche Show(s) möchtest du dich bewerben?" required>
+                <label for="bf-shows">Shows</label>
+                <input type="text" id="bf-shows" placeholder="Für welche Show(s) möchtest du dich bewerben? (optional)">
             </div>
             <div class="form-group-check">
                 <input type="checkbox" id="bf-newsletter">
@@ -905,7 +936,14 @@
                 <label for="bf-instagram">Instagram</label>
                 <input type="text" id="bf-instagram" placeholder="Dein Instagram-Accountname">
             </div>
-            <button type="submit" class="modal-submit">✉️ Jetzt E-Mail öffnen & abschicken</button>
+            <p class="channel-hint">Wähle, worüber du deine Bewerbung schicken möchtest:</p>
+            <p class="channel-subhint">Bei Instagram und Facebook kopieren wir deine Angaben automatisch – du fügst sie dort nur noch in die Nachricht ein und schickst sie ab. Eine E-Mail-Adresse brauchst du dafür nicht.</p>
+            <div class="channel-buttons">
+                <button type="submit" class="modal-submit channel-email">✉️ Per E-Mail</button>
+                <button type="button" class="modal-submit channel-instagram" onclick="sendBewerbungSocial('instagram')">📷 Per Instagram</button>
+                <button type="button" class="modal-submit channel-facebook" onclick="sendBewerbungSocial('facebook')">👍 Per Facebook</button>
+            </div>
+            <p class="channel-note" id="channel-copy-note"></p>
         </form>
     </div>
 </div>
@@ -944,8 +982,12 @@
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') closeBewerbungModal();
     });
-    function submitBewerbung(e) {
-        e.preventDefault();
+    var SOCIAL_URLS = {
+        instagram: 'https://www.instagram.com/poetryslamdon/',
+        facebook:  'https://www.facebook.com/slamdonauwoerth/'
+    };
+
+    function buildBewerbungText() {
         var name         = document.getElementById('bf-name').value.trim();
         var email        = document.getElementById('bf-email').value.trim();
         var shows        = document.getElementById('bf-shows').value.trim();
@@ -954,21 +996,64 @@
         var beschreibung = document.getElementById('bf-beschreibung').value.trim();
         var instagram    = document.getElementById('bf-instagram').value.trim();
 
-        var body =
-            'Name: ' + name + '\n' +
+        return 'Name: ' + name + '\n' +
             'E-Mail: ' + email + '\n' +
             'Shows: ' + shows + '\n' +
             'Newcomer-Newsletter: ' + newsletter + '\n' +
             (nachricht ? 'Nachricht: ' + nachricht + '\n' : '') +
             'Text & Auftritt: ' + beschreibung + '\n' +
             (instagram ? 'Instagram: ' + instagram + '\n' : '');
+    }
 
+    function submitBewerbung(e) {
+        e.preventDefault();
+        var body = buildBewerbungText();
         var mailto = 'mailto:klaus.rattenbacher@outlook.com' +
             '?subject=' + encodeURIComponent('Bewerbung Poetry Slam Donauwörth') +
             '&body=' + encodeURIComponent(body);
 
         window.location.href = mailto;
         closeBewerbungModal();
+    }
+
+    function sendBewerbungSocial(channel) {
+        // Für den Social-Weg nur die inhaltlichen Pflichtfelder prüfen (ohne E-Mail)
+        var pflicht = [
+            { id: 'bf-name',         label: 'Name' },
+            { id: 'bf-beschreibung', label: 'Text & Auftritt' }
+        ];
+        for (var i = 0; i < pflicht.length; i++) {
+            var feld = document.getElementById(pflicht[i].id);
+            if (!feld.value.trim()) {
+                feld.focus();
+                document.getElementById('channel-copy-note').textContent =
+                    '⚠️ Bitte fülle noch das Feld „' + pflicht[i].label + '" aus.';
+                return;
+            }
+        }
+
+        var text = buildBewerbungText();
+        var url  = SOCIAL_URLS[channel];
+        var note = document.getElementById('channel-copy-note');
+        var kanal = channel === 'instagram' ? 'Instagram' : 'Facebook';
+
+        function openProfile() {
+            note.textContent = '✅ Deine Daten wurden kopiert – füge sie in ' + kanal +
+                ' mit Strg+V (bzw. langem Tippen → Einfügen) in die Nachricht ein.';
+            window.top.open(url, '_blank');
+        }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(openProfile).catch(function() {
+                note.textContent = '⚠️ Kopieren nicht möglich – bitte deine Angaben in ' + kanal +
+                    ' manuell eintragen. Das Profil wird jetzt geöffnet.';
+                window.top.open(url, '_blank');
+            });
+        } else {
+            note.textContent = '⚠️ Automatisches Kopieren wird von deinem Browser nicht unterstützt – ' +
+                'bitte deine Angaben in ' + kanal + ' manuell eintragen. Das Profil wird jetzt geöffnet.';
+            window.top.open(url, '_blank');
+        }
     }
 </script>
 
