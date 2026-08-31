@@ -24,8 +24,8 @@
 
         .hero {
             background:
-url('https://img1.wsimg.com/isteam/ip/b3750489-1fb8-4215-899c-095dfbba0773/Poetry%20Slam%202025%20Harburg%2084.jpg')
-center/cover;
+url('hero-buehne.jpg')
+center 15%/cover;
             color: white;
             padding: 120px 20px 80px;
             text-align: center;
@@ -174,12 +174,15 @@ center/cover;
             color: #8A2387;
             margin-bottom: 20px;
             font-size: 1.5em;
+            text-align: center;
         }
 
         .venue-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 14px;
+            max-width: 90%;
+            margin: 0 auto;
         }
 
         .venue-item {
@@ -390,6 +393,36 @@ center/cover;
             color: #8A2387;
             min-height: 1.2em;
         }
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+        .countdown-item {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+            padding: 12px 16px;
+            min-width: 70px;
+            text-align: center;
+        }
+        .countdown-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #FFD700;
+            line-height: 1;
+            display: block;
+        }
+        .countdown-label {
+            font-size: 0.7em;
+            opacity: 0.85;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -400,12 +433,31 @@ center/cover;
 <div id="page-main" class="page active">
 
     <div class="hero">
-        <h1 class="hero-title">Poetry Slam Donauwörth <span class="slam-number">#11</span></h1>
+        <h1 class="hero-title">Poetry Slam Donauwörth</h1>
+
         <div class="next-event">
-            <h2>Nächster Slam</h2>
+            <h2>Poetry Slam Donauwörth #11</h2>
             <div class="date">12. November 2026</div>
             <div class="time">Einlass: 18:00 Uhr | Beginn: 19:00 Uhr</div>
             <p style="margin-top: 20px; font-size: 1.1em;">AULA des Gymnasium Donauwörth</p>
+            <div class="countdown" id="countdown-11">
+                <div class="countdown-item">
+                    <span class="countdown-number cd11-days">--</span>
+                    <span class="countdown-label">Tage</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number cd11-hours">--</span>
+                    <span class="countdown-label">Stunden</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number cd11-minutes">--</span>
+                    <span class="countdown-label">Minuten</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number cd11-seconds">--</span>
+                    <span class="countdown-label">Sekunden</span>
+                </div>
+            </div>
             <a href="javascript:void(0)"
                onclick="event.preventDefault(); event.stopPropagation();
 window.top.open('https://tickettune.com/ratsontour/veranstaltungen/', '_blank');"
@@ -414,6 +466,39 @@ window.top.open('https://tickettune.com/ratsontour/veranstaltungen/', '_blank');
                 🎟️ Tickets kaufen
             </a>
         </div>
+
+        <div class="next-event" style="margin-top: 30px;">
+            <h2>Poetry Slam Donauwörth #12</h2>
+            <div class="date">15. April 2027</div>
+            <div class="time">Einlass: 18:00 Uhr | Beginn: 19:00 Uhr</div>
+            <p style="margin-top: 20px; font-size: 1.1em;">AULA der FOS Donauwörth</p>
+            <div class="countdown" id="countdown-12">
+                <div class="countdown-item">
+                    <span class="countdown-number cd12-days">--</span>
+                    <span class="countdown-label">Tage</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number cd12-hours">--</span>
+                    <span class="countdown-label">Stunden</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number cd12-minutes">--</span>
+                    <span class="countdown-label">Minuten</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number cd12-seconds">--</span>
+                    <span class="countdown-label">Sekunden</span>
+                </div>
+            </div>
+            <a href="javascript:void(0)"
+               onclick="event.preventDefault(); event.stopPropagation();
+window.top.open('https://tickettune.com/ratsontour/veranstaltungen/', '_blank');"
+               class="cta-button"
+               style="margin-top: 25px; display: inline-block;">
+                🎟️ Tickets kaufen
+            </a>
+        </div>
+
         <p class="hero-credit">© Michael Steger</p>
     </div>
 
@@ -430,7 +515,7 @@ window.top.open('https://tickettune.com/ratsontour/veranstaltungen/', '_blank');
                         📍 Auf Google Maps anzeigen
                     </a>
                 </div>
-                <div class="venue-item">
+                <div class="venue-item" style="text-align: right; border-left: none; border-right: 4px solid #E94057;">
                     <strong>Herbst (November):</strong><br>
                     AULA des Gymnasium Donauwörth<br>
                     <a href="javascript:void(0)"
@@ -816,6 +901,10 @@ entscheidet.</li>
                 <input type="text" id="bf-beschreibung" placeholder="z.B. persönlich, politisch, lustig, poetisch …" required>
             </div>
             <div class="form-group">
+                <label for="bf-buehne">Wann standest du das erste Mal bei einem Slam auf der Bühne und wie oft seitdem? <span style="color:#c0392b">*</span></label>
+                <input type="text" id="bf-buehne" placeholder="z.B. das erste Mal 2023, seitdem etwa 5 Auftritte" required>
+            </div>
+            <div class="form-group">
                 <label for="bf-instagram">Instagram</label>
                 <input type="text" id="bf-instagram" placeholder="Dein Instagram-Accountname">
             </div>
@@ -838,6 +927,34 @@ entscheidet.</li>
         document.getElementById('page-' + page).classList.add('active');
         window.scrollTo(0, 0);
     }
+
+    (function() {
+        var slams = [
+            { ziel: new Date('2026-11-12T19:00:00'), box: 'countdown-11', p: 'cd11' },
+            { ziel: new Date('2027-04-15T19:00:00'), box: 'countdown-12', p: 'cd12' }
+        ];
+        function setValue(cls, val) {
+            var els = document.getElementsByClassName(cls);
+            for (var i = 0; i < els.length; i++) els[i].textContent = val;
+        }
+        function update() {
+            slams.forEach(function(s) {
+                var box = document.getElementById(s.box);
+                if (!box) return;
+                var diff = s.ziel - new Date();
+                if (diff <= 0) {
+                    box.innerHTML = '<p style="color:#FFD700;font-size:1.2em;">Der Slam ist heute! 🎤</p>';
+                    return;
+                }
+                setValue(s.p + '-days',    Math.floor(diff / 86400000));
+                setValue(s.p + '-hours',   String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0'));
+                setValue(s.p + '-minutes', String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0'));
+                setValue(s.p + '-seconds', String(Math.floor((diff % 60000) / 1000)).padStart(2, '0'));
+            });
+        }
+        update();
+        setInterval(update, 1000);
+    })();
 
     function openBewerbungModal() {
         var notice = document.getElementById('modal-event-list');
@@ -884,6 +1001,7 @@ entscheidet.</li>
         var newsletter   = document.getElementById('bf-newsletter').checked ? 'Ja' : 'Nein';
         var nachricht    = document.getElementById('bf-nachricht').value.trim();
         var beschreibung = document.getElementById('bf-beschreibung').value.trim();
+        var buehne       = document.getElementById('bf-buehne').value.trim();
         var instagram    = document.getElementById('bf-instagram').value.trim();
 
         return 'Name: ' + name + '\n' +
@@ -892,6 +1010,7 @@ entscheidet.</li>
             'Newcomer-Newsletter: ' + newsletter + '\n' +
             (nachricht ? 'Nachricht: ' + nachricht + '\n' : '') +
             'Text & Auftritt: ' + beschreibung + '\n' +
+            'Bühnenerfahrung: ' + buehne + '\n' +
             (instagram ? 'Instagram: ' + instagram + '\n' : '');
     }
 
@@ -910,7 +1029,8 @@ entscheidet.</li>
         // Für den Social-Weg nur die inhaltlichen Pflichtfelder prüfen (ohne E-Mail)
         var pflicht = [
             { id: 'bf-name',         label: 'Name' },
-            { id: 'bf-beschreibung', label: 'Text & Auftritt' }
+            { id: 'bf-beschreibung', label: 'Text & Auftritt' },
+            { id: 'bf-buehne',       label: 'Bühnenerfahrung' }
         ];
         for (var i = 0; i < pflicht.length; i++) {
             var feld = document.getElementById(pflicht[i].id);
