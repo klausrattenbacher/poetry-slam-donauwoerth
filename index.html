@@ -438,34 +438,126 @@ center 15%/cover;
             font-weight: bold;
         }
 
+        .event-box {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.25);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+        .event-box h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+        .event-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .event-item {
+            background: rgba(255,255,255,0.1);
+            border-left: 4px solid #FFD700;
+            border-radius: 8px;
+            padding: 16px 20px;
+            text-align: left;
+        }
+        .event-date {
+            font-size: 1.25em;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 4px;
+        }
+        .event-title {
+            font-size: 1.05em;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .event-venue {
+            font-size: 0.95em;
+            margin-bottom: 2px;
+        }
+        .event-address {
+            font-size: 0.88em;
+            opacity: 0.8;
+        }
+        .event-time {
+            font-size: 0.88em;
+            margin-top: 6px;
+            opacity: 0.85;
+        }
+        .event-ticket {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 18px;
+            background: #FFD700;
+            color: #1a1a1a;
+            font-weight: 700;
+            font-size: 0.9em;
+            border-radius: 6px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .event-ticket:hover {
+            background: #ffe44d;
+            transform: translateY(-1px);
+        }
+        .event-ticket-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .event-ticket-row .event-ticket { margin-top: 0; }
+        .event-ticket-status {
+            font-size: 0.9em;
+            font-weight: 700;
+            color: #1a1a1a;
+            background: #FFD700;
+            padding: 6px 14px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+        .event-ticket-status:empty { display: none; }
+        .countdown-box {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.25);
+        }
+        .countdown-label-next {
+            font-size: 0.85em;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
         .countdown {
             display: flex;
             justify-content: center;
             gap: 12px;
             flex-wrap: wrap;
-            margin-top: 25px;
         }
         .countdown-item {
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.2);
             border-radius: 10px;
-            padding: 12px 16px;
-            min-width: 70px;
+            padding: 10px 14px;
+            min-width: 66px;
             text-align: center;
         }
         .countdown-number {
-            font-size: 2em;
+            font-size: 1.8em;
             font-weight: bold;
             color: #FFD700;
             line-height: 1;
             display: block;
         }
-        .countdown-label {
+        .countdown-unit {
             font-size: 0.7em;
             opacity: 0.85;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-top: 5px;
+            margin-top: 4px;
             display: block;
         }
     </style>
@@ -494,68 +586,87 @@ center 15%/cover;
     <div class="hero">
         <h1 class="hero-title">Poetry Slam Donauwörth</h1>
 
-        <div class="next-event">
-            <h2>Poetry Slam Donauwörth #11</h2>
-            <div class="date">12. November 2026</div>
-            <div class="time">Einlass: 18:00 Uhr | Beginn: 19:00 Uhr</div>
-            <p style="margin-top: 20px; font-size: 1.1em;">AULA des Gymnasium Donauwörth</p>
-            <div class="countdown" id="countdown-11">
-                <div class="countdown-item">
-                    <span class="countdown-number cd11-days">--</span>
-                    <span class="countdown-label">Tage</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number cd11-hours">--</span>
-                    <span class="countdown-label">Stunden</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number cd11-minutes">--</span>
-                    <span class="countdown-label">Minuten</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number cd11-seconds">--</span>
-                    <span class="countdown-label">Sekunden</span>
-                </div>
-            </div>
-            <a href="javascript:void(0)"
-               onclick="event.preventDefault(); event.stopPropagation();
-window.top.open('https://tickettune.com/ratsontour/veranstaltungen/', '_blank');"
-               class="cta-button"
-               style="margin-top: 25px; display: inline-block;">
-                🎟️ Tickets kaufen
-            </a>
-        </div>
+        <div class="event-box">
+            <h2>Nächste Veranstaltungen</h2>
+            <div class="event-list">
 
-        <div class="next-event" style="margin-top: 30px;">
-            <h2>Poetry Slam Donauwörth #12</h2>
-            <div class="date">15. April 2027</div>
-            <div class="time">Einlass: 18:00 Uhr | Beginn: 19:00 Uhr</div>
-            <p style="margin-top: 20px; font-size: 1.1em;">AULA der FOS Donauwörth</p>
-            <div class="countdown" id="countdown-12">
-                <div class="countdown-item">
-                    <span class="countdown-number cd12-days">--</span>
-                    <span class="countdown-label">Tage</span>
+                <div class="event-item" id="event-11" data-datum="2026-11-12T19:00:00">
+                    <div class="event-date">12. November 2026</div>
+                    <div class="event-title">Poetry Slam Donauwörth #11</div>
+                    <div class="event-venue">AULA des Gymnasium Donauwörth</div>
+                    <div class="event-address">Pyrckstockstr. 1 · 86609 Donauwörth</div>
+                    <div class="event-time">Einlass: 18:00 Uhr | Beginn: 19:00 Uhr</div>
+                    <div class="event-ticket-row">
+                        <a href="javascript:void(0)"
+                           onclick="window.top.open('https://tickettune.com/ratsontour/veranstaltungen/', '_blank');"
+                           class="event-ticket">
+                            🎟️ Tickets kaufen
+                        </a>
+                        <span class="event-ticket-status" id="ticketstatus-11"></span>
+                    </div>
                 </div>
-                <div class="countdown-item">
-                    <span class="countdown-number cd12-hours">--</span>
-                    <span class="countdown-label">Stunden</span>
+
+                <div class="event-item" id="event-12" data-datum="2027-04-15T19:00:00">
+                    <div class="event-date">15. April 2027</div>
+                    <div class="event-title">Poetry Slam Donauwörth #12</div>
+                    <div class="event-venue">AULA der FOS Donauwörth (Hans-Leipelt-Schule)</div>
+                    <div class="event-address">Neudegger Allee 9 · 86609 Donauwörth-Neudegg</div>
+                    <div class="event-time">Einlass: 18:00 Uhr | Beginn: 19:00 Uhr</div>
+                    <div class="event-ticket-row">
+                        <a href="javascript:void(0)"
+                           onclick="window.top.open('https://tickettune.com/ratsontour/veranstaltungen/', '_blank');"
+                           class="event-ticket">
+                            🎟️ Tickets kaufen
+                        </a>
+                        <span class="event-ticket-status" id="ticketstatus-12"></span>
+                    </div>
                 </div>
-                <div class="countdown-item">
-                    <span class="countdown-number cd12-minutes">--</span>
-                    <span class="countdown-label">Minuten</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number cd12-seconds">--</span>
-                    <span class="countdown-label">Sekunden</span>
+
+            </div>
+
+            <div class="countdown-box" id="countdown-box-11">
+                <div class="countdown-label-next">Countdown bis #11 (Gymnasium)</div>
+                <div class="countdown" id="countdown-11">
+                    <div class="countdown-item">
+                        <span class="countdown-number cd11-days">--</span>
+                        <span class="countdown-unit">Tage</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number cd11-hours">--</span>
+                        <span class="countdown-unit">Stunden</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number cd11-minutes">--</span>
+                        <span class="countdown-unit">Minuten</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number cd11-seconds">--</span>
+                        <span class="countdown-unit">Sekunden</span>
+                    </div>
                 </div>
             </div>
-            <a href="javascript:void(0)"
-               onclick="event.preventDefault(); event.stopPropagation();
-window.top.open('https://tickettune.com/ratsontour/veranstaltungen/', '_blank');"
-               class="cta-button"
-               style="margin-top: 25px; display: inline-block;">
-                🎟️ Tickets kaufen
-            </a>
+
+            <div class="countdown-box" id="countdown-box-12">
+                <div class="countdown-label-next">Countdown bis #12 (FOS)</div>
+                <div class="countdown" id="countdown-12">
+                    <div class="countdown-item">
+                        <span class="countdown-number cd12-days">--</span>
+                        <span class="countdown-unit">Tage</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number cd12-hours">--</span>
+                        <span class="countdown-unit">Stunden</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number cd12-minutes">--</span>
+                        <span class="countdown-unit">Minuten</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number cd12-seconds">--</span>
+                        <span class="countdown-unit">Sekunden</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <p class="hero-credit">© Michael Steger</p>
@@ -980,6 +1091,15 @@ entscheidet.</li>
 </div>
 
 <script>
+    /* ══════════════════════════════════════════════════════════
+       ★★★  TICKET-STATUS HIER ÄNDERN  ★★★
+       Nur den Text zwischen den Anführungszeichen anpassen.
+       Leer lassen ('') = es wird nichts angezeigt.
+       ══════════════════════════════════════════════════════════ */
+    var TICKET_SLAM_11 = 'VVK läuft';   // Slam #11 (12.11.2026)
+    var TICKET_SLAM_12 = '';            // Slam #12 (15.04.2027)
+    /* ═══════════  Ab hier nichts mehr ändern  ═══════════════════ */
+
     function showPage(page) {
         document.getElementById('page-main').classList.remove('active');
         document.getElementById('page-datenschutz').classList.remove('active');
@@ -988,19 +1108,49 @@ entscheidet.</li>
     }
 
     (function() {
+        var ticketstatus = {
+            'ticketstatus-11': TICKET_SLAM_11,
+            'ticketstatus-12': TICKET_SLAM_12
+        };
+        // ────────────────────────────────────────────────────────────
+        Object.keys(ticketstatus).forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = ticketstatus[id];
+        });
+
         var slams = [
-            { ziel: new Date('2026-11-12T19:00:00'), box: 'countdown-11', p: 'cd11' },
-            { ziel: new Date('2027-04-15T19:00:00'), box: 'countdown-12', p: 'cd12' }
+            {
+                ziel: new Date('2026-11-12T19:00:00'),
+                box: 'countdown-11', p: 'cd11',
+                event: 'event-11', cbox: 'countdown-box-11'
+            },
+            {
+                ziel: new Date('2027-04-15T19:00:00'),
+                box: 'countdown-12', p: 'cd12',
+                event: 'event-12', cbox: 'countdown-box-12'
+            }
         ];
+
         function setValue(cls, val) {
             var els = document.getElementsByClassName(cls);
             for (var i = 0; i < els.length; i++) els[i].textContent = val;
         }
+
         function update() {
             slams.forEach(function(s) {
                 var box = document.getElementById(s.box);
+                var eventBox = document.getElementById(s.event);
+                var cbox = document.getElementById(s.cbox);
                 if (!box) return;
                 var diff = s.ziel - new Date();
+
+                // Veranstaltung + 1 Tag vorbei → Kachel UND Countdown-Box ausblenden
+                if (diff <= -86400000) {
+                    if (eventBox) eventBox.style.display = 'none';
+                    if (cbox) cbox.style.display = 'none';
+                    return;
+                }
+                // Am Veranstaltungstag (läuft/heute)
                 if (diff <= 0) {
                     box.innerHTML = '<p style="color:#FFD700;font-size:1.2em;">Der Slam ist heute! 🎤</p>';
                     return;
