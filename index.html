@@ -594,22 +594,6 @@ center 15%/cover;
             <h2>Nächste Veranstaltungen</h2>
             <div class="event-list">
 
-                <div class="event-item" id="event-11" data-datum="2026-11-12T19:00:00">
-                    <div class="event-date">12. November 2026</div>
-                    <div class="event-title">Poetry Slam Donauwörth #11</div>
-                    <div class="event-venue">AULA des Gymnasium Donauwörth</div>
-                    <div class="event-address">Pyrckstockstr. 1 · 86609 Donauwörth</div>
-                    <div class="event-time">Einlass: 18:00 Uhr | Beginn: 19:00 Uhr</div>
-                    <div class="event-ticket-row">
-                        <a href="javascript:void(0)"
-                           onclick="window.top.open('https://ratsontour.tickettune.com/ratsontour/detail/index/sArticle/16', '_blank');"
-                           class="event-ticket">
-                            🎟️ Tickets kaufen
-                        </a>
-                        <span class="event-ticket-status" id="ticketstatus-11"></span>
-                    </div>
-                </div>
-
                 <div class="event-item" id="event-12" data-datum="2027-04-15T19:00:00">
                     <div class="event-date">15. April 2027</div>
                     <div class="event-title">Poetry Slam Donauwörth #12</div>
@@ -626,28 +610,6 @@ center 15%/cover;
                     </div>
                 </div>
 
-            </div>
-
-            <div class="countdown-box" id="countdown-box-11">
-                <div class="countdown-label-next">Countdown bis #11 (Gymnasium)</div>
-                <div class="countdown" id="countdown-11">
-                    <div class="countdown-item">
-                        <span class="countdown-number cd11-days">--</span>
-                        <span class="countdown-unit">Tage</span>
-                    </div>
-                    <div class="countdown-item">
-                        <span class="countdown-number cd11-hours">--</span>
-                        <span class="countdown-unit">Stunden</span>
-                    </div>
-                    <div class="countdown-item">
-                        <span class="countdown-number cd11-minutes">--</span>
-                        <span class="countdown-unit">Minuten</span>
-                    </div>
-                    <div class="countdown-item">
-                        <span class="countdown-number cd11-seconds">--</span>
-                        <span class="countdown-unit">Sekunden</span>
-                    </div>
-                </div>
             </div>
 
             <div class="countdown-box" id="countdown-box-12">
@@ -747,14 +709,6 @@ center 15%/cover;
                             Erlebe einen unterhaltsamen Abend voller Wortakrobatik, Emotionen und Überraschungen.
                             Sichere dir rechtzeitig deine Tickets für den nächsten Slam!
                         </p>
-                    </div>
-                    <div class="info-card-bottom">
-                        <a href="javascript:void(0)"
-                           onclick="window.top.open('https://ratsontour.tickettune.com/ratsontour/detail/index/sArticle/16', '_blank');"
-                           class="cta-button"
-                           style="font-size: 1em; padding: 12px 30px;">
-                            Tickets sichern
-                        </a>
                     </div>
                 </div>
 
@@ -1089,7 +1043,6 @@ entscheidet.</li>
        Nur den Text zwischen den Anführungszeichen anpassen.
        Leer lassen ('') = es wird nichts angezeigt.
        ══════════════════════════════════════════════════════════ */
-    var VVK_TEXT_SLAM_11 = 'VVK läuft';   // Slam #11 (12.11.2026)
     var VVK_TEXT_SLAM_12 = 'VVK Start 15.Januar 2027';            // Slam #12 (15.04.2027)
     /* ═══════════  Ab hier nichts mehr ändern  ═══════════════════ */
 
@@ -1102,7 +1055,6 @@ entscheidet.</li>
 
     (function() {
         var ticketstatus = {
-            'ticketstatus-11': VVK_TEXT_SLAM_11,
             'ticketstatus-12': VVK_TEXT_SLAM_12
         };
         // ────────────────────────────────────────────────────────────
@@ -1113,11 +1065,6 @@ entscheidet.</li>
 
 
         var slams = [
-            {
-                ziel: new Date('2026-11-12T19:00:00'),
-                box: 'countdown-11', p: 'cd11',
-                event: 'event-11', cbox: 'countdown-box-11'
-            },
             {
                 ziel: new Date('2027-04-15T19:00:00'),
                 box: 'countdown-12', p: 'cd12',
